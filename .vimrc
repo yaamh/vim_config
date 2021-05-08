@@ -21,6 +21,7 @@ Plugin 'mhinz/vim-startify'
 Plugin 'mbbill/fencview'
 Plugin 'skywind3000/gutentags_plus'
 Plugin 'easymotion/vim-easymotion'
+Plugin 'tpope/vim-fugitive'
 
 "easymotion
 nmap ss <Plug>(easymotion-s2)
