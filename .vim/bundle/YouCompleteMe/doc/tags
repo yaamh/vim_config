@@ -92,6 +92,7 @@ g:ycm_tsserver_binary_path	youcompleteme.txt	/*g:ycm_tsserver_binary_path*
 g:ycm_use_clangd	youcompleteme.txt	/*g:ycm_use_clangd*
 g:ycm_use_ultisnips_completer	youcompleteme.txt	/*g:ycm_use_ultisnips_completer*
 g:ycm_warning_symbol	youcompleteme.txt	/*g:ycm_warning_symbol*
+youcompleteme	youcompleteme.txt	/*youcompleteme*
 youcompleteme#GetCommandResponse()	youcompleteme.txt	/*youcompleteme#GetCommandResponse()*
 youcompleteme#GetCommandResponseAsync()	youcompleteme.txt	/*youcompleteme#GetCommandResponseAsync()*
 youcompleteme#GetErrorCount	youcompleteme.txt	/*youcompleteme#GetErrorCount*
@@ -145,6 +146,7 @@ youcompleteme-manually-specified-solution-files	youcompleteme.txt	/*youcompletem
 youcompleteme-maven-projects	youcompleteme.txt	/*youcompleteme-maven-projects*
 youcompleteme-miscellaneous-commands	youcompleteme.txt	/*youcompleteme-miscellaneous-commands*
 youcompleteme-multi-file-refactor	youcompleteme.txt	/*youcompleteme-multi-file-refactor*
+youcompleteme-note-minimum-compiler-versions-have-been-increased	youcompleteme.txt	/*youcompleteme-note-minimum-compiler-versions-have-been-increased*
 youcompleteme-note-minimum-requirements-have-changed	youcompleteme.txt	/*youcompleteme-note-minimum-requirements-have-changed*
 youcompleteme-option-1-use-compilation-database-45	youcompleteme.txt	/*youcompleteme-option-1-use-compilation-database-45*
 youcompleteme-option-2-provide-flags-manually	youcompleteme.txt	/*youcompleteme-option-2-provide-flags-manually*
@@ -170,4 +172,3 @@ youcompleteme-working-with-third-party-packages	youcompleteme.txt	/*youcompletem
 youcompleteme-working-with-virtual-environments	youcompleteme.txt	/*youcompleteme-working-with-virtual-environments*
 youcompleteme-writing-new-semantic-completers	youcompleteme.txt	/*youcompleteme-writing-new-semantic-completers*
 youcompleteme-ycmcompleter-subcommands	youcompleteme.txt	/*youcompleteme-ycmcompleter-subcommands*
-youcompleteme.txt	youcompleteme.txt	/*youcompleteme.txt*

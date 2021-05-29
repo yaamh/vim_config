@@ -63,6 +63,7 @@ airline-poetv	airline.txt	/*airline-poetv*
 airline-predefined-parts	airline.txt	/*airline-predefined-parts*
 airline-promptline	airline.txt	/*airline-promptline*
 airline-quickfix	airline.txt	/*airline-quickfix*
+airline-scrollbar	airline.txt	/*airline-scrollbar*
 airline-searchcount	airline.txt	/*airline-searchcount*
 airline-sections	airline.txt	/*airline-sections*
 airline-syntastic	airline.txt	/*airline-syntastic*

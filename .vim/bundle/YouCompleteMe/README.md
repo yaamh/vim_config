@@ -68,9 +68,10 @@ Contents
     - [Client-Server Architecture](#client-server-architecture)
     - [Completion String Ranking](#completion-string-ranking)
     - [General Semantic Completion](#general-semantic-completion)
+    - [Signature Help](#signature-help)
     - [C-family Semantic Completion](#c-family-semantic-completion)
     - [Java Semantic Completion](#java-semantic-completion)
-	- [C# Semantic Completion](#c-semantic-completion)
+    - [C# Semantic Completion](#c-semantic-completion)
     - [Python Semantic Completion](#python-semantic-completion)
     - [Rust Semantic Completion](#rust-semantic-completion)
     - [Go Semantic Completion](#go-semantic-completion)
@@ -80,6 +81,7 @@ Contents
     - [Writing New Semantic Completers](#writing-new-semantic-completers)
     - [Diagnostic Display](#diagnostic-display)
         - [Diagnostic Highlighting Groups](#diagnostic-highlighting-groups)
+    - [Symbol Search](#symbol-search)
 - [Commands](#commands)
     - [YcmCompleter subcommands](#ycmcompleter-subcommands)
         - [GoTo Commands](#goto-commands)
@@ -175,7 +177,7 @@ number of languages, including:
 - displaying signature help (argument hints) when entering the arguments to a
   function call (Vim only)
 - [finding declarations, definitions, usages](#goto-commands), etc.
-  of identifiers,
+  of identifiers, and an [interactive symbol finder](#symbol-search)
 - [displaying type information](#the-gettype-subcommand) for classes,
   variables, functions etc.,
 - displaying documentation for methods, members, etc. in the [preview
@@ -326,10 +328,9 @@ The following additional language support options are available:
 - Java support: install [JDK8 (version 8 required)][jdk-install] and add
   `--java-completer` when calling `install.py`.
 
-To simply compile with everything enabled, there's a `--all` flag. You need to
-specify it manually by adding `--clangd-completer`. So, to install with all
-language features, ensure `xbuild`, `go`, `node` and `npm` tools
-are installed and in your `PATH`, then simply run:
+To simply compile with everything enabled, there's a `--all` flag. So, to
+install with all language features, ensure `xbuild`, `go`, `node` and `npm`
+tools are installed and in your `PATH`, then simply run:
 
 ```
 cd ~/.vim/bundle/YouCompleteMe
@@ -441,10 +442,9 @@ The following additional language support options are available:
 - Java support: install [JDK8 (version 8 required)][jdk-install] and add
   `--java-completer` when calling `install.py`.
 
-To simply compile with everything enabled, there's a `--all` flag. You need to
-specify it manually by adding `--clangd-completer`. So, to install with all
-language features, ensure `xbuild`, `go`, `node`, `npm` and tools
-are installed and in your `PATH`, then simply run:
+To simply compile with everything enabled, there's a `--all` flag. So, to
+install with all language features, ensure `xbuild`, `go`, `node` and `npm`
+tools are installed and in your `PATH`, then simply run:
 
 ```
 cd ~/.vim/bundle/YouCompleteMe
@@ -465,7 +465,7 @@ that are conservatively turned off by default that you may want to turn on.
 #### Quick start, installing all completers
 
 - Install YCM plugin via [Vundle][]
-- Install [Visual Studio Build Tools 2017][visual-studio-download]
+- Install [Visual Studio Build Tools 2019][visual-studio-download]
 - Install cmake, vim and python
 - Install go, node and npm
 - Compile YCM
@@ -528,8 +528,8 @@ Download and install the following software:
   matching the version number exactly.
 - [CMake][cmake-download]. Add CMake executable to the PATH environment
   variable.
-- [Visual Studio Build Tools 2017][visual-studio-download]. During setup,
-  select _Visual C++ build tools_ in _Workloads_.
+- [Build Tools for Visual Studio 2019][visual-studio-download]. During setup,
+  select _C++ build tools_ in _Workloads_.
 
 Compiling YCM **with** semantic support for C-family languages through
 **clangd**:
@@ -558,10 +558,9 @@ The following additional language support options are available:
 - Java support: install [JDK8 (version 8 required)][jdk-install] and add
   `--java-completer` when calling `install.py`.
 
-To simply compile with everything enabled, there's a `--all` flag. You need to
-specify it manually by adding `--clangd-completer`. So, to install with all
-language features, ensure `msbuild`, `go`, `node` and `npm` tools
-are installed and in your `PATH`, then simply run:
+To simply compile with everything enabled, there's a `--all` flag. So, to
+install with all language features, ensure `msbuild`, `go`, `node` and `npm`
+tools are installed and in your `PATH`, then simply run:
 
 ```
 cd %USERPROFILE%/vimfiles/bundle/YouCompleteMe
@@ -665,10 +664,9 @@ The following additional language support options are available:
 - Java support: install [JDK8 (version 8 required)][jdk-install] and add
   `--java-completer` when calling `./install.py`.
 
-To simply compile with everything enabled, there's a `--all` flag. You need to
-specify it manually by adding `--clangd-completer`. So, to install with all
-language features, ensure `xbuild`, `go`, `node`, `npm` and tools
-are installed and in your `PATH`, then simply run:
+To simply compile with everything enabled, there's a `--all` flag. So, to
+install with all language features, ensure `xbuild`, `go`, `node` and `npm`
+tools are installed and in your `PATH`, then simply run:
 
 ```
 cd ~/.vim/bundle/YouCompleteMe
@@ -705,7 +703,8 @@ Quick Feature Summary
 * Signature help
 * Real-time diagnostic display
 * Go to include/declaration/definition (`GoTo`, etc.)
-* Find Symbol (`GoToSymbol`)
+* Find Symbol (`GoToSymbol`), with interactive search
+* Document outline (`GoToDocumentOutline`), with interactive search
 * View documentation comments for identifiers (`GetDoc`)
 * Type information for identifiers (`GetType`)
 * Automatically fix certain errors (`FixIt`)
@@ -720,7 +719,7 @@ Quick Feature Summary
 * Real-time diagnostic display
 * Go to declaration/definition (`GoTo`, etc.)
 * Go to implementation (`GoToImplementation`)
-* Find Symbol (`GoToSymbol`)
+* Find Symbol (`GoToSymbol`), with interactive search
 * View documentation comments for identifiers (`GetDoc`)
 * Type information for identifiers (`GetType`)
 * Automatically fix certain errors (`FixIt`)
@@ -733,7 +732,7 @@ Quick Feature Summary
 * Semantic auto-completion
 * Signature help
 * Go to definition (`GoTo`)
-* Find Symbol (`GoToSymbol`)
+* Find Symbol (`GoToSymbol`), with interactive search
 * Reference finding (`GoToReferences`)
 * View documentation comments for identifiers (`GetDoc`)
 * Type information for identifiers (`GetType`)
@@ -747,6 +746,7 @@ Quick Feature Summary
 * Go to declaration/definition (`GoTo`, etc.)
 * Go to type definition (`GoToType`)
 * Go to implementation (`GoToImplementation`)
+* Document outline (`GoToDocumentOutline`), with interactive search
 * Automatically fix certain errors (`FixIt`)
 * View documentation comments for identifiers (`GetDoc`)
 * Type information for identifiers (`GetType`)
@@ -762,7 +762,7 @@ Quick Feature Summary
   identical)
 * Go to type definition (`GoToType`)
 * Go to implementation (`GoToImplementation`)
-* Find Symbol (`GoToSymbol`)
+* Find Symbol (`GoToSymbol`), with interactive search
 * Reference finding (`GoToReferences`)
 * View documentation comments for identifiers (`GetDoc`)
 * Type information for identifiers (`GetType`)
@@ -779,6 +779,7 @@ Quick Feature Summary
 * Go to declaration/definition (`GoTo`, etc.)
 * Go to implementation (`GoToImplementation`)
 * Reference finding (`GoToReferences`)
+* Document outline (`GoToDocumentOutline`), with interactive search
 * View documentation comments for identifiers (`GetDoc`)
 * Automatically fix certain errors (`FixIt`)
 * Type information for identifiers (`GetType`)
@@ -795,8 +796,9 @@ Quick Feature Summary
   identical)
 * Go to type definition (`GoToType`)
 * Go to implementation (`GoToImplementation`)
-* Find Symbol (`GoToSymbol`)
+* Find Symbol (`GoToSymbol`), with interactive search
 * Reference finding (`GoToReferences`)
+* Document outline (`GoToDocumentOutline`), with interactive search
 * View documentation comments for identifiers (`GetDoc`)
 * Type information for identifiers (`GetType`)
 * Automatically fix certain errors including code generation (`FixIt`)
@@ -909,9 +911,8 @@ string.
 
 ### Signature Help
 
-Signature help is an **experimental** feature for which we value your feedback.
 Valid signatures are displayed in a second popup menu and the current signature
-is highlighed along with the current arguemnt.
+is highlighted along with the current argument.
 
 Signature help is triggered in insert mode automatically when
 `g:ycm_auto_trigger` is enabled and is not supported when it is not enabled.
@@ -1643,6 +1644,61 @@ Here's how you'd change the style for a group:
 highlight YcmErrorLine guibg=#3f0000
 ```
 
+### Symbol Search
+
+***This feature requires Vim and does not work in Neovim***
+
+YCM provides a way to search for and jump to a symbol in the current project or
+document when using supported languages.
+
+You can search for symbols in the current workspace when the `GoToSymbol`
+request is supported and the current document when `GoToDocumentOutline` is
+supported.
+
+Here's a quick demo: 
+
+[![asciicast](https://asciinema.org/a/4JmYLAaz5hOHbZDD0hbsQpY8C.svg)](https://asciinema.org/a/4JmYLAaz5hOHbZDD0hbsQpY8C)
+
+As you can see, you can type and YCM filters down the list as you type. The
+current set of matches are displayed in a popup window in the centre of the
+screen and you can select an entry with the keyboard, to jump to that position.
+Any matches are then added to the quickfix list.
+
+To enable:
+
+* `nmap <something> <Plug>(YCMFindSymbolInWorkspace)`
+* `nmap <something> <Plug>(YCMFindSymbolInDocument)`
+
+e.g.
+
+* `nmap <leader>yfw <Plug>(YCMFindSymbolInWorkspace)`
+* `nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)`
+
+When searching, YCM opens a prompt buffer at the top of the screen for the
+input, and puts you in insert mode. This means that you can hit `<Esc>` to go
+into normal mode and use any other input commands that are supported in prompt
+buffers. As you type characters, the serch is updated.
+
+While the popup is open, the following keys are intercepted:
+
+* `<C-j>`, `<Down>`, `<C-n>`, `<Tab>` - select the next item
+* `<C-k>`, `<Up>`, `<C-p>`, `<S-Tab>` - select the previous item
+* `<PageUp>`, `<kPageUp>` - jump up one screenful of items 
+* `<PageDown>`, `<kPageDown>` - jump down one screenful of items
+* `<Home>`, `<kHome>` - jump to first item
+* `<End>`, `<kEnd>` - jump to last item
+* `<CR>` - jump to the selected item
+* `<C-c>` cancel/dismiss the popup
+
+The search is also cancelled if you leave the prompt buffer window at any time,
+so you can use window commands `<C-w>...` for example.
+
+#### Closing the popup
+
+***NOTE***: Pressing `<Esc>` does not close the popup - you must use `Ctrl-c`
+for that, or use a window command (e.g. `<Ctrl-w>j`) or the mouse to leave the
+prompt buffer window.
+
 Commands
 --------
 
@@ -1799,7 +1855,8 @@ Supported in filetypes: `c, cpp, objc, objcpp, cuda`
 #### The `GoToSymbol <symbol query>` subcommand
 
 Finds the definition of all symbols matching a specified string. Note that this
-does not use any sort of smart/fuzzy matching.
+does not use any sort of smart/fuzzy matching. However, an [interactive symbol
+search](#symbol-search) is also available.
 
 Supported in filetypes: `c, cpp, objc, objcpp, cuda, cs, java, javascript, python, typescript`
 
@@ -1833,6 +1890,13 @@ Looks up the symbol under the cursor and jumps to the definition of its type
 e.g. if the symbol is an object, go to the definition of its class.
 
 Supported in filetypes: `go, java, javascript, typescript`
+
+#### The `GoToDocumentOutline` subcommand
+
+Provides a list of symbols in current document, in the quickfix list. See also
+[interactive symbol search](#symbol-search).
+
+Supported in filetypes: `c, cpp, objc, objcpp, cuda, go, java, rust`
 
 ### Semantic Information Commands
 
@@ -3467,7 +3531,7 @@ This software is licensed under the [GPL v3 license][gpl].
 [tsconfig.json]: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 [vim-win-download]: https://github.com/vim/vim-win32-installer/releases
 [python-win-download]: https://www.python.org/downloads/windows/
-[visual-studio-download]: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=15
+[visual-studio-download]: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16
 [mono-install-macos]: https://www.mono-project.com/docs/getting-started/install/mac/
 [mono-install-linux]: https://www.mono-project.com/download/stable/#download-lin
 [go-install]: https://golang.org/doc/install
